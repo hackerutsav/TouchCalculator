@@ -1,39 +1,53 @@
-package com.example.root.touchcalculator;
+package com.pragmatouch.calculator;
 
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.*;
+import android.content.*;
+import android.view.*;
+import android.view.View.OnClickListener;
 
+public class KeypadAdapter extends BaseAdapter {
+    private Context mContext;
 
-public class MainActivity extends ActionBarActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public KeypadAdapter(Context c) {
+        mContext = c;
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public int getCount() {
+        return mButtons.length;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public Object getItem(int position) {
+        return mButtons[position];
+    }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    // create a new ButtonView for each item referenced by the Adapter
+    public View getView(int position, View convertView, ViewGroup parent) {
+        Button btn;
+        if (convertView == null) { // if it's not recycled, initialize some attributes
+            btn = new Button(mContext);
+            KeypadButton keypadButton = mButtons[position];
+
+            // Set CalculatorButton enumeration as tag of the button so that we
+            // will use this information from our main view to identify what to do
+            btn.setTag(keypadButton);
+        }
+        else {
+            btn = (Button) convertView;
         }
 
-        return super.onOptionsItemSelected(item);
+        btn.setText(mButtons[position].getText());
+        return btn;
     }
+
+    // Create and populate keypad buttons array with CalculatorButton values
+    private KeypadButton[] mButtons = { KeypadButton.MC, KeypadButton.MR,KeypadButton.MS, KeypadButton.M_ADD, KeypadButton.M_REMOVE,
+            KeypadButton.BACKSPACE, KeypadButton.CE, KeypadButton.C,KeypadButton.SIGN, KeypadButton.SQRT,
+            KeypadButton.SEVEN,KeypadButton.EIGHT, KeypadButton.NINE, KeypadButton.DIV,KeypadButton.PERCENT,
+            KeypadButton.FOUR, KeypadButton.FIVE,KeypadButton.SIX, KeypadButton.MULTIPLY, KeypadButton.RECIPROC,
+            KeypadButton.ONE, KeypadButton.TWO, KeypadButton.THREE,KeypadButton.MINUS, KeypadButton.DECIMAL_SEP,
+            KeypadButton.DUMMY, KeypadButton.ZERO,KeypadButton.DUMMY,KeypadButton.PLUS, KeypadButton.CALCULATE };
 }
